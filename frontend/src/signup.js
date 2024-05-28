@@ -32,7 +32,6 @@ function Signup() {
               })
                 .catch(err => console.log(err));
         }
-        
       }
     
   return (

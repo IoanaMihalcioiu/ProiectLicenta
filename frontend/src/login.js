@@ -23,29 +23,32 @@ function Login() {
     }));
   };
 
-  const handleSubmit =(event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const err = Validation(values);
     setErrors(err);
-  
-    if (err.email === "" && err.password === "") {
-      axios.post('http://localhost:8081/login', values)
-        .then(res => {
-          console.log('Login response:', res.data);
 
-          if (res.data.message === "Success") {
-               console.log('Login successful, navigating to home.');
-                navigate('/home');
-          } else {
-                 console.log('Login failed:', res.data.message);
-                 setBackendError([res.data]);
-                alert("Try again");
-            }
-        })
-        .catch(err => console.log(err));
-        setBackendError(['An error occurred while logging in. Please try again later.']);
+    if (err.email === "" && err.password === "") {
+        axios.post('http://localhost:8081/login', values)
+            .then(res => {
+                console.log('Login response:', res.data);
+
+                if (res.data.message === "Success") {
+                    console.log('Login successful, navigating to home.');
+                    localStorage.setItem('token', res.data.token); // Stochează token-ul în localStorage
+                    navigate('/home');
+                } else {
+                    console.log('Login failed:', res.data.message);
+                    setBackendError([{ msg: res.data.message }]);
+                    alert("Try again");
+                }
+            })
+            .catch(err => {
+                console.error('Error logging in:', err);
+                setBackendError([{ msg: 'An error occurred while logging in. Please try again later.' }]);
+            });
     }
-  }  
+};
 
   return (
     <div className="login-container">
