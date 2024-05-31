@@ -1,12 +1,23 @@
 const express = require("express");
 const mysql = require('mysql');
 const cors = require('cors');
-const bcrypt = require('bcrypt')
-const jwt =  require ('jsonwebtoken')
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const { cookie } = require("express-validator");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false,
+        maxAge: 1000 * 60 * 60 * 24
+    }
+}))
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -23,68 +34,38 @@ db.connect((err) => {
     console.log('Connected to database.');
 });
 
-const SECRET_KEY = 'your_jwt_secret_key';
-
-app.post('/signup', async (req, res) => {
+app.post('/signup', (req, res) => {
     const { name, email, password } = req.body;
-    try {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        db.query("INSERT INTO login (name, email, password) VALUES (?, ?, ?)", [name, email, hashedPassword],
-             (err, result) => {
-                if (err) {
-                  console.error('Error executing query:', err);
-                  return res.status(500).json({ message: "Error" });
-                }
-                 return res.json({ message: "User created successfully.", result });
+
+    db.query("INSERT INTO login (name, email, password) VALUES (?, ?, ?)", [name, email, password],
+        (err, result) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                return res.status(500).json({ message: "Error" });
             }
-         );
-    }catch (err) {
-        console.error('Error hashing password:', err);
-        res.status(500).json({ message: "Internal server error" });
-    }
+            return res.json({ message: "User created successfully." });
+        }
+    );
 });
 
-app.post('/login', async (req, res) => {
+app.post('/login', (req, res) => {
     const { email, password } = req.body;
-    console.log(`Login attempt: email=${email}`);
+    console.log(`Login attempt: email=${email}, password=${password}`);
 
-    db.query("SELECT * FROM login WHERE email = ? AND password = ?", [email, password], async (err, result) => {
+    db.query("SELECT * FROM login WHERE email = ? AND password = ?", [email, password], (err, result) => {
         if (err) {
             console.error('Error executing query:', err);
+            return res.status(500).json({ message: "Database query error" });
         }
+        console.log('Query result:', result);
         if (result.length > 0) {
-            const user = result[0];
-            const isMatch = await bcrypt.compare(password, user.password);
-            if(isMatch){
-                const token = jwt.sign({email:user.email}, SECRET_KEY, {expiresIn: '1h'});
-                return res.json({ message: "Success", token });
-            }else {
-                return res.status(401).json({ message: "Invalid credentials. Please try again." });
-            }
+            req.session.username = result[0].username;
+            console.log(req.session.username);
+            return res.json({ message: "Success" });
         } else {
             return res.status(401).json({ message: "Invalid credentials. Please try again." });
-        }      
+        }
     });
-});
-
-
-const authenticateJWT = (req, res, next) => {
-    const token = req.headers.authorization;
-    if (token) {
-        jwt.verify(token, SECRET_KEY, (err, user) => {
-            if (err) {
-                return res.sendStatus(403);
-            }
-            req.user = user;
-            next();
-        });
-    } else {
-        res.sendStatus(401);
-    }
-};
-
-app.get('/protected', authenticateJWT, (req, res) => {
-    res.json({ message: "This is a protected route", user: req.user });
 });
 
 const PORT = 8081;
