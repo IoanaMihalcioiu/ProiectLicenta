@@ -4,6 +4,8 @@ import Login from "./login";
 import Signup from "./signup";
 import Home from './home'
 import Intro from "./intro";
+import Admin from "./admin";
+import Student from "./student";
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/home' element={<Home />} />
+        <Route path='/admin' element={<Admin />} />
+        <Route path='/student' element={<Student />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import Admin from './admin';
+import Student from './student';
 
 function Home() {
-  const [name, setName] = useState('')
+  const [role, setRole] = useState('')
   const navigate = useNavigate()
 
   axios.defaults.withCredentials = true;
@@ -11,18 +13,21 @@ function Home() {
     axios.get('http://localhost:8081/home')
     .then(res => {
       if (res.data.valid){
-        setName(res.data.name);
+        setRole(res.data.role);
       } else {
         navigate ('/login')
       }
       console.log(res)
     })
     .catch( err => console.log(err))
-  }, [])
+  }, [navigate])
+
+ 
 
   return (
     <div>
-      Home {name}
+      {role === "admin" && <Admin /> }
+      {role === "student"&&  <Student /> }
     </div>
   )
 }

@@ -82,7 +82,7 @@ app.post('/login', (req, res) => {
                 }
 
                 if (isMatch) {
-                    req.session.name = user.name;
+                    req.session.role = user.role;
                     return res.json({ message: "Success" });
                 } else {
                     return res.status(401).json({ message: "Invalid credentials. Please try again." });
@@ -95,12 +95,22 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-    if(req.session.name) {
-        return res.json({ valid: true, name: req.session.name})
+    if(req.session.role) {
+        return res.json({ valid: true, role: req.session.role})
     } else {
         return res.json({ valid: false})
     }
 })
+
+app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ message: "Logout failed" });
+        }
+        res.clearCookie('connect.sid');
+        return res.json({ message: "Success" });
+    });
+});
 
 const PORT = 8081;
 app.listen(PORT, () => {
