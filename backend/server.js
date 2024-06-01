@@ -4,6 +4,9 @@ const cors = require('cors');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser')
+const bcrypt = require ('bcrypt')
+
+const salt = 10;
 
 const app = express();
 app.use(cors({
@@ -42,30 +45,49 @@ db.connect((err) => {
 app.post('/signup', (req, res) => {
     const { name, email, password } = req.body;
 
-    db.query("INSERT INTO login (name, email, password) VALUES (?, ?, ?)", [name, email, password],
-        (err, result) => {
+    bcrypt.hash(password.toString(), salt, (err, hash) => {
+        if (err) {
+            console.error('Error hashing password:', err);
+            return res.status(500).json({ message: "Error hashing password" });
+        }
+
+        const sql = "INSERT INTO login (name, email, password) VALUES (?, ?, ?)";
+        const values = [name, email, hash];
+
+        db.query(sql, values, (err) => {
             if (err) {
                 console.error('Error executing query:', err);
-                return res.status(500).json({ message: "Error" });
+                return res.status(500).json({ message: "Error inserting user" });
             }
-            return res.json({ message: "User created successfully." });
-        }
-    );
+            return res.status(201).json({ message: "User created successfully." });
+        });
+    });
 });
 
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
-    console.log(`Login attempt: email=${email}, password=${password}`);
 
-    db.query("SELECT * FROM login WHERE email = ? AND password = ?", [email, password], (err, result) => {
+    db.query("SELECT * FROM login WHERE email = ?", [email], (err, result) => {
         if (err) {
             console.error('Error executing query:', err);
             return res.status(500).json({ message: "Database query error" });
         }
-        console.log('Query result:', result);
+
         if (result.length > 0) {
-            req.session.name = result[0].name;
-            return res.json({ message: "Success"});
+            const user = result[0];
+            bcrypt.compare(password, user.password, (err, isMatch) => {
+                if (err) {
+                    console.error('Error comparing password:', err);
+                    return res.status(500).json({ message: "Error comparing password" });
+                }
+
+                if (isMatch) {
+                    req.session.name = user.name;
+                    return res.json({ message: "Success" });
+                } else {
+                    return res.status(401).json({ message: "Invalid credentials. Please try again." });
+                }
+            });
         } else {
             return res.status(401).json({ message: "Invalid credentials. Please try again." });
         }
