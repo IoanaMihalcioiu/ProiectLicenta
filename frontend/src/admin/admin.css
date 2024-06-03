@@ -1,0 +1,11 @@
+
+.aaa {
+    
+   background-image: url('../img/header.jpg');
+    
+    background-size: cover;
+    background-position: -100px center;
+    background-repeat: no-repeat;
+    display: flex;
+    
+}

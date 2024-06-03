@@ -6,7 +6,7 @@ function Student() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    axios.get('http://localhost:8081/logout')
+    axios.get('http://localhost:8081/autentificare/logout')
       .then(res => {
         if (res.data.message === "Success") {
           navigate('/login');

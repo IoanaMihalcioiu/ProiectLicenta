@@ -24,7 +24,7 @@ function Login() {
     };
 
     useEffect(()=> {
-        axios.get('http://localhost:8081/home')
+        axios.get('http://localhost:8081/autentificare/home')
         .then(res => {
           if (res.data.valid){
             navigate ('/home')
@@ -34,7 +34,7 @@ function Login() {
           console.log(res)
         })
         .catch( err => console.log(err))
-      }, [])
+      }, [navigate])
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -42,7 +42,7 @@ function Login() {
         setErrors(err);
 
         if (err.email === "" && err.password === "") {
-            axios.post('http://localhost:8081/login', values)
+            axios.post('http://localhost:8081/autentificare/login', values)
                 .then(res => {
                     console.log('Login response:', res.data);
 

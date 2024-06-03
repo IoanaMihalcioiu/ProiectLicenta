@@ -1,0 +1,62 @@
+.student-management {
+    padding: 20px;
+}
+.total-students-box {
+    background-color: #f2f2f2;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 18px;
+}
+
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.students-table th, .students-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.students-table th {
+    background-color: #f2f2f2;
+}
+
+.students-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.students-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.edit-btn {
+    background-color: #00bfff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 4px;
+}
+
+.edit-btn:hover {
+    background-color: #009acd;
+}
+
+.delete-btn {
+    background-color: #ff4500;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.delete-btn:hover {
+    background-color: #e63900;
+}
