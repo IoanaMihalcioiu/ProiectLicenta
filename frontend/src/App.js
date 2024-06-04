@@ -11,8 +11,9 @@ import StudentManagement from "./admin/StudentManagement";
 import Chat from "./admin/Chat";
 import ChatStudenti from "./student/ChatStudenti";
 import Calendar from "./student/Calendar";
-import CursuriStudenti from "./student/CursuriStudenti";
+
 import Search from "./student/Search";
+import Cursuri from "./student/Cursuri";
 
 
 
@@ -25,7 +26,7 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route path='/home' element={<Home />} />
         <Route path='/student' element={<Student />} >
-           <Route path='/student/cursuri' element={<CursuriStudenti />}> </Route>
+           <Route path='/student/cursuri' element={<Cursuri />}> </Route>
            <Route path='/student/search' element={<Search />}> </Route>
            <Route path='/student/calendar' element={<Calendar />}> </Route>
             <Route path='/student/chat' element={<ChatStudenti />}> </Route>
