@@ -70,6 +70,21 @@ const Course = {
             }
             callback(null, results);
         });
+    },
+    getAll: (callback) => {
+        const sql = 'SELECT id, name, level, category FROM courses';
+        db3.query(sql, (err, results) => {
+            if (err) {
+                console.error('Error fetching courses:', err);
+                return callback(err);
+            }
+            // Adăugăm un obiect 'objectID' pentru Algolia
+            const courses = results.map(course => ({
+                ...course,
+                objectID: course.id.toString(),
+            }));
+            callback(null, courses);
+        });
     }
 };
 

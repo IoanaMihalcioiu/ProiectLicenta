@@ -1,4 +1,5 @@
 const Course = require('../modele/courseModel');
+const algoliasearch = require('algoliasearch');
 
 exports.getAllCourses = (req, res) => {
     Course.getAll((err, courses) => {
@@ -69,3 +70,18 @@ exports.getCoursesByCategory = (req, res) => {
         res.status(200).json(courses);
     });
 };
+
+exports.searchCourses = (req, res) => {
+    const query = req.query.q;
+    const sql = 'SELECT * FROM courses WHERE name LIKE ? OR email LIKE ? OR phone LIKE ?';
+    const values = [`%${query}%`, `%${query}%`, `%${query}%`];
+
+    db.query(sql, values, (err, results) => {
+        if (err) {
+            console.error('Error fetching search results:', err);
+            return res.status(500).json({ message: 'Error fetching search results' });
+        }
+        res.status(200).json(results);
+    });
+};
+

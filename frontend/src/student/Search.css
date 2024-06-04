@@ -1,0 +1,23 @@
+.search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.hit-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.hit-item h2 {
+    margin: 0 0 5px;
+}
+
+.hit-item p {
+    margin: 5px 0;
+}
