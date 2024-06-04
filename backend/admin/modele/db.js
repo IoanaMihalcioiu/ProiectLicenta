@@ -6,13 +6,14 @@ const db = mysql.createConnection({
     password: "",
     database: "signup"
 });
-
 db.connect((err) => {
     if (err) {
-        console.error('Database connection failed:', err.stack);
+        console.error('Database 1 connection failed:', err.stack);
         return;
     }
-    console.log('Connected to database.');
+    console.log('1Connected to database.');
 });
+
+
 
 module.exports = db;

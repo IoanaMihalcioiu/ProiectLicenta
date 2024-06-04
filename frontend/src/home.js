@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Admin from './admin/admin';
-import Student from './student';
+import Student from './student/student';
 
 function Home() {
   const [role, setRole] = useState('');

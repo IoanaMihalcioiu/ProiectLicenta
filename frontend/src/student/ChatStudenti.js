@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './Chat.css';
+import '../admin/Chat.css';
 
-function Chat() {
-    const [name] = useState('admin'); // Stocăm numele utilizatorului curent
+function ChatStudenti() {
+    const [name] = useState('Student'); // Stocăm numele utilizatorului curent
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
 
@@ -60,4 +60,4 @@ function Chat() {
     );
 }
 
-export default Chat;
+export default ChatStudenti;
