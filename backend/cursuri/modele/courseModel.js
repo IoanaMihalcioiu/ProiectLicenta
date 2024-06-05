@@ -1,16 +1,7 @@
 const db3 = require('../db');
 
 const Course = {
-    getAll: (callback) => {
-        const sql = 'SELECT * FROM courses';
-        db3.query(sql, (err, results) => {
-            if (err) {
-                console.error('Error fetching courses:', err);
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+   
     getById: (id, callback) => {
         const sql = 'SELECT * FROM courses WHERE id = ?';
         db3.query(sql, [id], (err, result) => {
@@ -18,9 +9,9 @@ const Course = {
                 console.error('Error fetching course:', err);
                 return callback(err);
             }
-            callback(null, result);
+            callback(null, result[0]);
         });
-    },
+    },  
     create: (courseData, callback) => {
         const sql = 'INSERT INTO courses (name, level, category) VALUES (?, ?, ?)';
         db3.query(sql, [courseData.name, courseData.level, courseData.category], (err, result) => {
@@ -84,6 +75,35 @@ const Course = {
                 objectID: course.id.toString(),
             }));
             callback(null, courses);
+        });
+    },
+    getLessonsByCourseId: function(courseId, callback) {
+        const sql = 'SELECT * FROM lessons WHERE course_id = ?';
+        db3.query(sql, [courseId], (err, result) => {
+            if (err) {
+                console.error('Error fetching lesson:', err);
+                return callback(err);
+            }
+            callback(null, result);
+        });
+    },
+    getLessonById: function(lessonId, callback) {
+        const sql = 'SELECT * FROM lessons WHERE id = ?';
+        db3.query(sql, [lessonId], (err, result) => {
+            if (err) {
+                console.error('Error fetching lesson:', err);
+                return callback(err);
+            }
+            callback(null, result[0]);
+        });
+    },getAllCourses : (callback) => {
+        const sql = 'SELECT * FROM courses';
+        db3.query(sql, (err, results) => {
+            if (err) {
+                console.error('Error fetching courses:', err);
+                return callback(err);
+            }
+            callback(null, results);
         });
     }
 };

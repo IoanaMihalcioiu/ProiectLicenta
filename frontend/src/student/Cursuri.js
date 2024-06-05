@@ -1,5 +1,7 @@
 import React, { useEffect, useState,useCallback } from 'react';
 import axios from 'axios';
+
+import { Link } from 'react-router-dom';
 import './CursuriStudenti.css';
 
 function Cursuri() {
@@ -25,9 +27,6 @@ function Cursuri() {
         fetchCourses();
     }, [fetchCourses]);
 
-    
-
-
     return (
         <div className="cursuri-container">
             <h1>Cursuri</h1>
@@ -47,7 +46,8 @@ function Cursuri() {
                     <li key={course.id} className="course-item">
                         <h2>{course.name}</h2>
                         <p>Nivel: {course.level}</p>
-                        <p>Categorie: {course.category}</p>
+                         <p>Categorie: {course.category}</p>
+                         <Link to={`/student/start-course/${course.id}`}>Start Course</Link>
                     </li>
                 ))}
             </ul>

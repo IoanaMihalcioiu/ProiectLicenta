@@ -14,9 +14,9 @@ exports.getCourseById = (req, res) => {
     const id = req.params.id;
     Course.getById(id, (err, course) => {
         if (err) {
-            return res.status(500).json({ message: 'Error fetching course' });
+            return res.status(500).send(err);
         }
-        res.status(200).json(course);
+            res.send(course);
     });
 };
 
@@ -85,3 +85,23 @@ exports.searchCourses = (req, res) => {
     });
 };
 
+exports.getLessonById = (req, res) => {
+    const lessonId = req.params.lessonId;
+    Course.getLessonById(lessonId, (err, lesson) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        res.json(lesson);
+    });
+};
+
+
+exports.getLessonsByCourseId = (req, res) => {
+    const { courseId } = req.params;
+    Course.getLessonById(courseId, (err, lesson) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        res.send(lesson);
+    });
+};

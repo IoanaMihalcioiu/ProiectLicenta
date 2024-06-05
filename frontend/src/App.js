@@ -13,6 +13,9 @@ import ChatStudenti from "./student/ChatStudenti";
 import Calendar from "./student/Calendar";
 import Search from "./student/Search";
 import Cursuri from "./student/Cursuri";
+import StartCourse from "./student/StartCourse";
+import Lesson from "./student/Lesson";
+import QuizPage from "./student/Quiz";
 
 
 
@@ -26,6 +29,9 @@ function App() {
         <Route path='/home' element={<Home />} />
         <Route path='/student' element={<Student />} >
            <Route path='/student/cursuri' element={<Cursuri />}> </Route>
+           <Route path='/student/start-course/:courseId' element={<StartCourse />} />
+           <Route path='/student/cursuri/:courseId/lessons/:lessonId' element={<Lesson />} />
+           <Route path='/student/cursuri/:courseId/quiz/:lessonId' element={<QuizPage />} />
            <Route path='/student/search' element={<Search />}> </Route>
            <Route path='/student/calendar' element={<Calendar />}> </Route>
             <Route path='/student/chat' element={<ChatStudenti />}> </Route>
