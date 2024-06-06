@@ -8,8 +8,6 @@ const Lesson = () => {
   const [lesson, setLesson] = useState(null);
 
   useEffect(() => {
-    console.log("lessonId:", lessonId);
-    console.log("Course ID:", courseId);
     const fetchLesson = async () => {
       try {
         const response = await axios.get(`http://localhost:8083/student/cursuri/lessons/${lessonId}`);

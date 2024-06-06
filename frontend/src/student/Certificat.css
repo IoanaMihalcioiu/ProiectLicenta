@@ -1,0 +1,29 @@
+.congratulations-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .congratulations-container h1 {
+    font-size: 36px;
+    color: #bed3d8;
+  }
+  
+  .congratulations-container p {
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .congratulations-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #bed3d8;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .congratulations-container button:hover {
+    background-color: #bed3d8;
+  }
+  

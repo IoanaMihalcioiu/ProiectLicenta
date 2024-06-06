@@ -1,44 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import  Quiz  from 'react-quiz-component';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-
-const quizData = {
-  quizTitle: "Quiz Title",
-  questions: [
-    {
-      question: "Question 1",
-      questionType: "text",
-      answerSelectionType: "single",
-      answers: ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-      correctAnswer: "1"
-    },
-    {
-      question: "Question 2",
-      questionType: "text",
-      answerSelectionType: "single",
-      answers: ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
-      correctAnswer: "2"
-    }
-  ]
-};
+import { useParams, useNavigate  } from 'react-router-dom';
+import { quizzes } from './quizData';
+import { Bar } from 'react-chartjs-2';
+import 'chart.js/auto';
 
 const QuizPage = () => {
   const { courseId, lessonId } = useParams();
   const [quizResult, setQuizResult] = useState(null);
+  const navigate = useNavigate();
+  const [progressData, setProgressData] = useState({ completed: 0, remaining: 0 });
+
+  useEffect(() => {
+    const totalLessons = Object.keys(quizzes).length;
+    const completedLessons = parseInt(lessonId);
+    const remainingLessons = totalLessons - completedLessons;
+    setProgressData({ completed: completedLessons, remaining: remainingLessons });
+  }, [lessonId]);
 
   const handleQuizCompletion = async (result) => {
     setQuizResult(result);
     const correctAnswers = result.numberOfCorrectAnswers;
     const totalQuestions = result.numberOfQuestions;
+  };
 
-    if (correctAnswers / totalQuestions >= 0.75) {
-      alert('You can proceed to the next lesson.');
-      // logic to unlock next lesson
+  const handleNextLesson = () => {
+    const nextLessonId = parseInt(lessonId) + 1;
+    if (nextLessonId <= 4) {
+      navigate(`/student/cursuri/${courseId}/lessons/${nextLessonId}`);
     } else {
-      alert('You need to score at least 75% to proceed to the next lesson.');
+      navigate('/certificat');
     }
   };
+
+  const handleRetryQuiz = () => {
+    setQuizResult(null); // Reset the quiz result to retry
+  };
+
+   const quizData = quizzes[lessonId];
+
+  if (!quizData) return <div>Quiz not found</div>;
 
   return (
     <div>
@@ -47,7 +48,27 @@ const QuizPage = () => {
         <h2>Quiz Results</h2>
         <p>Correct Answers: {quizResult.numberOfCorrectAnswers}</p>
         <p>Total Questions: {quizResult.numberOfQuestions}</p>
+        {quizResult.numberOfCorrectAnswers / quizResult.numberOfQuestions >= 0.75 ? (
+          <button onClick={handleNextLesson}>Next</button>
+        ) : (
+          <button onClick={handleRetryQuiz}>Retry Quiz</button>
+        )}
       </div>}
+      <div>
+        <h2>Progres Curs</h2>
+        <Bar
+          data={{
+            labels: ['Lecții Completate', 'Lecții Ramase'],
+            datasets: [
+              {
+                label: 'Progres',
+                data: [progressData.completed, progressData.remaining],
+                backgroundColor: ['#4CAF50', '#FF6384'],
+              },
+            ],
+          }}
+        />
+      </div>
     </div>
   );
 };

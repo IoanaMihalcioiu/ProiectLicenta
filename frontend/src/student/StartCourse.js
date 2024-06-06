@@ -29,6 +29,7 @@ const StartCourse = () => {
   return (
     <div>
       <h1>Bine ai venit la curs</h1>
+      <p>Pentru a putea promova cursul trebuie sa ai minim 75% raspunsuri corecte.</p>
       <p>Apasa "Next" pentru a parcurge prima lectie.</p>
       <Link to={`/student/cursuri/${courseId}/lessons/${firstLessonId}`}>Next</Link>
     </div>
