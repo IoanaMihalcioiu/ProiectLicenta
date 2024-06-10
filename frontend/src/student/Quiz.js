@@ -29,7 +29,7 @@ const QuizPage = () => {
     if (nextLessonId <= 4) {
       navigate(`/student/cursuri/${courseId}/lessons/${nextLessonId}`);
     } else {
-      navigate('/certificat');
+      navigate('/student/certificat');
     }
   };
 
