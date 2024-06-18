@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import './EditStudent.css';
 
 
 function EditStudent({ student, onSave, onClose }) {
+
     const [name, setName] = useState(student.name);
     const [email, setEmail] = useState(student.email);
 
-    
+    useEffect(() => {
+        console.log("EditStudent component rendered with student:", student);
+    }, [student]);
+
 
     const handleSave = () => {
         onSave(student.id, name, email);

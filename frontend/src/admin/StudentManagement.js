@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import EditStudent from './EditStudent';
-import './EditStudent.css'
+import './EditStudent.css';
 import './StudentManagement.css';
 
 function StudentManagement() {
@@ -36,6 +36,7 @@ function StudentManagement() {
     const handleEdit = (student) => {
         console.log('Editing student:', student);
         setEditingStudent(student);
+        console.log('Editing student state after set:', student);
     };
 
     const handleSave = async (id, name, email) => {
@@ -48,6 +49,11 @@ function StudentManagement() {
             console.error('Error updating student:', error);
         }
     };
+
+    useEffect(() => {
+        console.log("Editing student state changed:", editingStudent);
+    }, [editingStudent]);
+
 
     return (
         <div className="student-management">

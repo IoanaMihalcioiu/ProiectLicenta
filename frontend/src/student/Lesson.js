@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Bar } from 'react-chartjs-2';
+import 'chart.js/auto';
 import './Lesson.css';
 
 const Lesson = () => {
   const { courseId, lessonId } = useParams();
   const [lesson, setLesson] = useState(null);
+  const [progressData, setProgressData] = useState({ completed: 0, remaining: 0 });
 
   useEffect(() => {
     const fetchLesson = async () => {
@@ -22,6 +25,13 @@ const Lesson = () => {
     }
   }, [lessonId, courseId]);
 
+  useEffect(() => {
+    const totalLessons = 4; 
+    const completedLessons = parseInt(lessonId) - 1;
+    const remainingLessons = totalLessons - completedLessons ;
+    setProgressData({ completed: completedLessons, remaining: remainingLessons });
+  }, [lessonId]);
+
   if (!lesson) return <div>Loading...</div>;
 
   return (
@@ -34,6 +44,21 @@ const Lesson = () => {
       </div>
       <div className="next-button">
         <Link to={`/student/cursuri/${courseId}/quiz/${lessonId}`}>Next</Link>
+      </div>
+      <div>
+        <h2>Progres Curs</h2>
+        <Bar
+          data={{
+            labels: ['Lecții Completate', 'Lecții Ramase'],
+            datasets: [
+              {
+                label: 'Progres',
+                data: [progressData.completed, progressData.remaining],
+                backgroundColor: ['#4CAF50', '#FF6384'],
+              },
+            ],
+          }}
+        />
       </div>
     </div>
   );

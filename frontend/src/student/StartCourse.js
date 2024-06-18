@@ -12,7 +12,7 @@ const StartCourse = () => {
         const response = await axios.get(`http://localhost:8083/student/cursuri/course/${courseId}/lessons`);
         console.log('Lessons response:', response.data);
         if (response.data && response.data.id) {
-          setFirstLessonId(response.data.id); // Assuming lessons have an `id` field
+          setFirstLessonId(response.data.id); 
         }else {
           console.error('No lessons found for this course');
         }

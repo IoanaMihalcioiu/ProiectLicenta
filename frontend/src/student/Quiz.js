@@ -1,27 +1,19 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import  Quiz  from 'react-quiz-component';
 import { useParams, useNavigate  } from 'react-router-dom';
 import { quizzes } from './quizData';
-import { Bar } from 'react-chartjs-2';
+
 import 'chart.js/auto';
 
 const QuizPage = () => {
   const { courseId, lessonId } = useParams();
   const [quizResult, setQuizResult] = useState(null);
   const navigate = useNavigate();
-  const [progressData, setProgressData] = useState({ completed: 0, remaining: 0 });
-
-  useEffect(() => {
-    const totalLessons = Object.keys(quizzes).length;
-    const completedLessons = parseInt(lessonId);
-    const remainingLessons = totalLessons - completedLessons;
-    setProgressData({ completed: completedLessons, remaining: remainingLessons });
-  }, [lessonId]);
+  
 
   const handleQuizCompletion = async (result) => {
     setQuizResult(result);
-    const correctAnswers = result.numberOfCorrectAnswers;
-    const totalQuestions = result.numberOfQuestions;
+    
   };
 
   const handleNextLesson = () => {
@@ -34,7 +26,8 @@ const QuizPage = () => {
   };
 
   const handleRetryQuiz = () => {
-    setQuizResult(null); // Reset the quiz result to retry
+    setQuizResult(null);
+    navigate(0); // Reset the quiz result to retry
   };
 
    const quizData = quizzes[lessonId];
@@ -54,21 +47,6 @@ const QuizPage = () => {
           <button onClick={handleRetryQuiz}>Retry Quiz</button>
         )}
       </div>}
-      <div>
-        <h2>Progres Curs</h2>
-        <Bar
-          data={{
-            labels: ['Lecții Completate', 'Lecții Ramase'],
-            datasets: [
-              {
-                label: 'Progres',
-                data: [progressData.completed, progressData.remaining],
-                backgroundColor: ['#4CAF50', '#FF6384'],
-              },
-            ],
-          }}
-        />
-      </div>
     </div>
   );
 };

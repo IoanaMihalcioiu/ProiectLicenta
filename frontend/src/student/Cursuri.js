@@ -35,7 +35,7 @@ function Cursuri() {
                 <button className="filter-button" onClick={() => setFilter('level/intermediate')}>Intermediar</button>
                 <button className="filter-button" onClick={() => setFilter('level/advanced')}>Avansat</button>
                 <button className="filter-button" onClick={() => setFilter('category/programming')}>Programare</button>
-                <button className="filter-button" onClick={() => setFilter('category/fun')}>Fun</button>
+                <button className="filter-button" onClick={() => setFilter('category/important')}>Important</button>
                 <button className="filter-button" onClick={() => setFilter('category/matematics')}>Matematica</button>
                 <button className="filter-button" onClick={() => setFilter('category/signals')}>Semnale</button>
                 <button className="filter-button" onClick={() => setFilter('category/circuits')}>Circuite</button>

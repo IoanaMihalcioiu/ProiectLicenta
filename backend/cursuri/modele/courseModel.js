@@ -96,7 +96,8 @@ const Course = {
             }
             callback(null, result[0]);
         });
-    },getAllCourses : (callback) => {
+    },
+    getAllCourses : (callback) => {
         const sql = 'SELECT * FROM courses';
         db3.query(sql, (err, results) => {
             if (err) {
