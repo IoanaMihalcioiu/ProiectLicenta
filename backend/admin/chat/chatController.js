@@ -1,5 +1,12 @@
 const db = require('./db');
 
+const forbiddenWords = ["filtrare", "badword", "cuvantinterzis"];
+
+function containsForbiddenWords(message) {
+    const lowerCaseMessage = message.toLowerCase();
+    return forbiddenWords.some(word => lowerCaseMessage.includes(word));
+}
+
 // Obține toate mesajele
 exports.getAllMessages = (req, res) => {
     const sql = "SELECT id, name, message, timestamp FROM messages ORDER BY timestamp ASC";
@@ -15,6 +22,11 @@ exports.getAllMessages = (req, res) => {
 // Adaugă un mesaj nou
 exports.addMessage = (req, res) => {
     const { name, message } = req.body;
+
+    if (containsForbiddenWords(message)) {
+        return res.status(400).json({ message: "Message contains inappropriate content" });
+    }
+    
     const sql = "INSERT INTO messages (name, message) VALUES (?, ?)";
     db.query(sql, [name, message], (err, result) => {
         if (err) {

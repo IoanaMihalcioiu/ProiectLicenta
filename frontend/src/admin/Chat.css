@@ -16,7 +16,7 @@
     border-radius: 8px;
     margin-bottom: 10px;
     background-color: white;
-    max-height: 70vh; /* Ajustați această valoare în funcție de preferințe */
+    max-height: 70vh; 
 }
 
 .message {
@@ -25,18 +25,23 @@
     border-radius: 5px;
     max-width: 60%;
     word-wrap: break-word;
+    display: inline-block;
 }
 
 .my-message {
     background-color: #d1e7dd;
     align-self: flex-end;
-    text-align: right; /* Ajustare text */
+    text-align: right; 
+    float: right;
+    clear: both;
 }
 
 .other-message {
     background-color: #f8d7da;
     align-self: flex-start;
-    text-align: left; /* Ajustare text */
+    text-align: left; 
+    float: left;
+    clear: both;
 }
 
 .new-message-container {
@@ -45,25 +50,26 @@
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 8px;
+    margin-top: auto;
 }
 
 .new-message-container input {
+    padding: 5px 10px; 
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px; 
+}
+
+.new-message-container button {
     flex: 1;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
     margin-right: 10px;
     font-size: 16px;
-}
-
-.new-message-container button {
-    padding: 5px 10px; /* Dimensiuni mai mici pentru buton */
-    border: none;
     background-color: #007bff;
     color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px; /* Dimensiune font ajustată */
 }
 
 .new-message-container button:hover {

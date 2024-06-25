@@ -3,9 +3,10 @@ import axios from 'axios';
 import './Chat.css';
 
 function Chat() {
-    const [name] = useState('admin'); // Stocăm numele utilizatorului curent
+    const [name] = useState('Admin'); 
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
+    const [error, setError] = useState('');
 
     useEffect(() => {
         fetchMessages();
@@ -24,14 +25,21 @@ function Chat() {
         if (newMessage.trim() === '') return;
         
         try {
-            await axios.post('http://localhost:8082/admin/chat/messages', {
+            const response = await axios.post('http://localhost:8082/admin/chat/messages', {
                 name,
                 message: newMessage
             }, { withCredentials: true });
-            setNewMessage('');
-            fetchMessages();
+
+            if (response.status === 201) {
+                setNewMessage('');
+                fetchMessages();
+                setError('');
+            }
         } catch (error) {
             console.error('Error sending message:', error);
+            if (error.response && error.response.status === 400) {
+                setError('Message contains inappropriate content');
+            }
         }
     };
 
@@ -41,7 +49,7 @@ function Chat() {
                 {messages.map(msg => (
                     <div 
                         key={msg.id} 
-                        className={`message ${msg.name === name ? 'my-message' : 'other-message'}`}
+                        className={`message ${msg.name.toLowerCase() === name.toLowerCase() ? 'my-message' : 'other-message'}`}
                     >
                         <strong>{msg.name}:</strong> {msg.message}
                     </div>
@@ -50,12 +58,13 @@ function Chat() {
             <div className="new-message-container">
                 <input
                     type="text"
-                    placeholder="Type your message here..."
+                    placeholder="Adreseaza intrebarea ta..."
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                 />
                 <button onClick={handleSendMessage}>Send</button>
             </div>
+            {error && <div className="error">{error}</div>}
         </div>
     );
 }
